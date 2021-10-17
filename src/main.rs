@@ -7,7 +7,11 @@ use serenity::{
     prelude::*,
 };
 
+mod commands;
+
 struct Handler;
+
+use commands::prefix;
 
 #[async_trait]
 impl EventHandler for Handler {
@@ -17,12 +21,13 @@ impl EventHandler for Handler {
     // Event handlers are dispatched through a threadpool, and so multiple
     // events can be dispatched simultaneously.
     async fn message(&self, ctx: Context, msg: Message) {
-        if msg.content == "!ping" {
+        let prefix = prefix::Prefix::new();
+        if msg.content == prefix.a + "create" {
             // Sending a message can fail, due to a network error, an
             // authentication error, or lack of permissions to post in the
             // channel, so log to stdout when some error happens, with a
             // description of it.
-            if let Err(why) = msg.channel_id.say(&ctx.http, "Pong!").await {
+            if let Err(why) = msg.channel_id.say(&ctx.http, "Hello world!").await {
                 println!("Error sending message: {:?}", why);
             }
         }
